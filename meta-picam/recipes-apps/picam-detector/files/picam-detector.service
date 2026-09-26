@@ -1,0 +1,17 @@
+[Unit]
+Description=picam person-detection camera
+# Cố ý KHÔNG chờ mạng: camera + AI phải chạy ngay cả khi chưa có WiFi,
+# để đo đúng thời gian từ lúc boot đến lần phát hiện người đầu tiên.
+After=local-fs.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/picam
+ExecStart=/usr/bin/picam-detector
+Restart=always
+RestartSec=2
+LogsDirectory=picam
+Nice=-5
+
+[Install]
+WantedBy=multi-user.target

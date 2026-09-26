@@ -1,0 +1,15 @@
+# Raspberry Pi Zero 2 W (64-bit). Build: ./scripts/build.sh pizero2w
+header:
+  version: 14
+
+machine: raspberrypi0-2w-64
+
+local_conf_header:
+  10-board: |
+    # Board chỉ có 512MB RAM: nhường tối đa RAM cho Linux
+    GPU_MEM = "16"
+    # Tham số ứng dụng cho board yếu (ghi vào /etc/default/picam)
+    PICAM_CAM_WIDTH = "320"
+    PICAM_CAM_HEIGHT = "240"
+    PICAM_INPUT_SIZE = "256"
+    PICAM_STREAM_FPS = "5"

@@ -1,0 +1,31 @@
+# /etc/default/picam — cấu hình cho picam-detector (systemd đọc qua EnvironmentFile).
+# Sửa xong: systemctl restart picam-detector
+
+# Camera USB (UVC). Có thể ghi số (0) hoặc đường dẫn (/dev/video0)
+PICAM_CAMERA=/dev/video0
+PICAM_CAM_WIDTH=@CAM_WIDTH@
+PICAM_CAM_HEIGHT=@CAM_HEIGHT@
+PICAM_CAM_FPS=15
+
+# Model ONNX kiểu YOLOv8 (đầu ra [1, 4+số_lớp, N]); lớp 0 = người (COCO)
+PICAM_MODEL=/usr/share/picam/model.onnx
+PICAM_INPUT_SIZE=@INPUT_SIZE@
+PICAM_CLASS_ID=0
+PICAM_CONF=0.40
+PICAM_NMS=0.45
+# 0 = dùng tất cả nhân CPU
+PICAM_THREADS=0
+
+# Cổng chuyển động: chỉ chạy AI khi có chuyển động (tiết kiệm CPU/điện)
+PICAM_MOTION_GATE=1
+PICAM_MOTION_THRESHOLD=0.005
+PICAM_MOTION_KEEPALIVE_MS=2000
+PICAM_PERSON_HOLD_MS=3000
+
+# Web: http://<ip>:8080  (/stream, /stats, /snapshot.jpg)
+PICAM_HTTP_PORT=8080
+PICAM_STREAM_FPS=@STREAM_FPS@
+PICAM_JPEG_QUALITY=70
+
+# Log từng lần suy luận để đo đạc (để trống để tắt)
+PICAM_CSV_LOG=/var/log/picam/infer.csv

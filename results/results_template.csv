@@ -1,0 +1,5 @@
+config,boot_to_first_person_s,userspace_ready_s,mem_available_mb,rootfs_used_mb,infer_ms_mean,infer_per_s,cpu_util_pct,cpu_temp_c
+rpios-gate-off,,,,,,,,
+rpios-gate-on,,,,,,,,
+yocto-gate-off,,,,,,,,
+yocto-gate-on,,,,,,,,

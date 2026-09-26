@@ -1,0 +1,12 @@
+# Raspberry Pi 5. Build: ./scripts/build.sh pi5
+header:
+  version: 14
+
+machine: raspberrypi5
+
+local_conf_header:
+  10-board: |
+    PICAM_CAM_WIDTH = "640"
+    PICAM_CAM_HEIGHT = "480"
+    PICAM_INPUT_SIZE = "320"
+    PICAM_STREAM_FPS = "10"

@@ -1,0 +1,53 @@
+# Cấu hình chung cho mọi board. Luôn build bằng: kas/common.yml:kas/<board>.yml[:kas/wifi.yml]
+header:
+  version: 14
+
+distro: poky
+target: picam-image
+
+repos:
+  # Repo hiện tại (chứa file này) — layer riêng của đồ án
+  picam:
+    layers:
+      meta-picam:
+
+  poky:
+    url: https://git.yoctoproject.org/poky
+    branch: scarthgap
+    layers:
+      meta:
+      meta-poky:
+
+  meta-openembedded:
+    url: https://git.openembedded.org/meta-openembedded
+    branch: scarthgap
+    layers:
+      meta-oe:
+
+  meta-raspberrypi:
+    url: https://git.yoctoproject.org/meta-raspberrypi
+    branch: scarthgap
+
+local_conf_header:
+  00-picam-base: |
+    # --- Hệ thống ---
+    INIT_MANAGER = "systemd"
+    DISTRO_FEATURES:remove = "x11 wayland"
+    hostname:pn-base-files = "picam"
+    IMAGE_FSTYPES = "wic.bz2 wic.bmap"
+    ENABLE_UART = "1"
+
+    # Firmware WiFi của Raspberry Pi dùng giấy phép Synaptics (bắt buộc chấp nhận mới build được WiFi)
+    LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
+
+    # Chỉ dùng cho demo trong phòng lab: root không mật khẩu, cho phép SSH root
+    EXTRA_IMAGE_FEATURES = "allow-empty-password empty-root-password allow-root-login"
+
+    # --- OpenCV tối giản: chỉ cần core/imgproc/imgcodecs/videoio(V4L2)/dnn ---
+    PACKAGECONFIG:remove:pn-opencv = "gapi python3 gstreamer samples tbb gphoto2 tiff gtk text tests"
+    PACKAGECONFIG:append:pn-opencv = " dnn v4l libv4l jpeg png"
+
+    # --- Máy build (laptop 16GB RAM): giới hạn song song để không hết RAM khi build OpenCV ---
+    BB_NUMBER_THREADS = "8"
+    PARALLEL_MAKE = "-j 8"
+    INHERIT += "rm_work"

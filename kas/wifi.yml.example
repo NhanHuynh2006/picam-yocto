@@ -1,0 +1,10 @@
+# Copy thành kas/wifi.yml (đã được .gitignore) rồi điền WiFi thật.
+# Để trống/không có file này thì image vẫn build được nhưng không tự kết nối WiFi.
+header:
+  version: 14
+
+local_conf_header:
+  20-wifi: |
+    WIFI_SSID = "TenWifi"
+    WIFI_PSK = "MatKhauWifi"
+    WIFI_COUNTRY = "VN"

@@ -1,0 +1,10 @@
+build/
+cache/
+poky/
+meta-openembedded/
+meta-raspberrypi/
+.venv-export/
+kas/wifi.yml
+meta-picam/recipes-apps/picam-model/files/*.onnx
+results/*.png
+__pycache__/
