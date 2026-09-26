@@ -51,6 +51,8 @@ scripts/host_setup.sh     cài Docker + kas trên máy build (1 lần)
 scripts/export_model.sh   xuất YOLOv8n -> ONNX (256, 320) và tự kiểm tra bằng OpenCV
 scripts/build.sh          build image cho một board
 scripts/flash.sh          ghi image ra thẻ nhớ bằng bmaptool
+scripts/check_device.sh   từ laptop: kiểm tra hết giai đoạn 4 bằng một lệnh (SSH + /stats + snapshot)
+scripts/measure_remote.sh từ laptop: chạy measure.sh trên board qua SSH, lưu results/<nhãn>.txt
 scripts/rpios/install_baseline.sh   cài cùng app lên Raspberry Pi OS (baseline + thử khả thi)
 scripts/device/measure.sh           đo trên thiết bị (chạy được trên cả 2 hệ điều hành)
 tools/collect_stats.py    lấy /stats từ laptop ra CSV
@@ -146,6 +148,8 @@ và `.wic.bmap`. Ghi lại kích thước file `.wic.bz2` và kích thước roo
    ```
 5. [NGƯỜI DÙNG] Mở `http://picam.local:8080`, xác nhận phát hiện đúng.
 
+Có thể làm bước 4 bằng một lệnh trên laptop: `./scripts/check_device.sh [root@<ip>]`.
+
 **Điều kiện hoàn thành:** log có đủ `CAMERA_OPENED`, `MODEL_READY`, và `FIRST_PERSON_DETECTED`
 khi có người trước camera; trang web hiện hình và khung vàng.
 
@@ -171,6 +175,8 @@ Mỗi hệ điều hành:
 3. **Mức tải khi không có ai** (đây là chỗ cổng chuyển động tạo khác biệt): để phòng trống,
    đo `sh measure.sh <os>-gate-off-empty 60` và `sh measure.sh <os>-gate-on-empty 60`.
 4. Đóng trình duyệt khi đo (mã hoá JPEG cho trình duyệt cũng tốn CPU).
+   Hoặc từ laptop, không cần copy script sang board: `./scripts/measure_remote.sh <nhãn> 60 [user@host]`
+   (kết quả lưu thẳng vào `results/<nhãn>.txt`).
 5. Lấy file kết quả về laptop (dropbear không có SFTP nên dùng `cat`):
    ```bash
    ssh root@picam.local cat /tmp/picam-measure-<nhãn>.txt > results/<nhãn>.txt
