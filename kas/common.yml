@@ -48,6 +48,6 @@ local_conf_header:
     PACKAGECONFIG:append:pn-opencv = " dnn v4l libv4l jpeg png"
 
     # --- Máy build (laptop 16GB RAM): giới hạn song song để không hết RAM khi build OpenCV ---
-    BB_NUMBER_THREADS = "8"
-    PARALLEL_MAKE = "-j 8"
+    BB_NUMBER_THREADS = "4"
+    PARALLEL_MAKE = "-j 4"
     INHERIT += "rm_work"
