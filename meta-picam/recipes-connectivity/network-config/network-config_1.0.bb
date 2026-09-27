@@ -26,17 +26,17 @@ do_install() {
     fi
 
     install -d ${D}${sysconfdir}/wpa_supplicant
-    cat > ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-wlan0.conf <<'WPAEOF'
-ctrl_interface=/run/wpa_supplicant
-update_config=1
-country=${WIFI_COUNTRY}
-
-network={
-    ssid="${WIFI_SSID}"
-    psk="${WIFI_PSK}"
-    key_mgmt=WPA-PSK
-}
-WPAEOF
+    # printf thay cho heredoc: bitbake coi dòng "}" ở cột 0 là kết thúc hàm
+    printf '%s\n' \
+        'ctrl_interface=/run/wpa_supplicant' \
+        'update_config=1' \
+        'country=${WIFI_COUNTRY}' \
+        '' \
+        'network={' \
+        '    ssid="${WIFI_SSID}"' \
+        '    psk="${WIFI_PSK}"' \
+        '    key_mgmt=WPA-PSK' \
+        '}' > ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-wlan0.conf
     chmod 0600 ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-wlan0.conf
 
     # Bật wpa_supplicant@wlan0.service (template unit do gói wpa-supplicant cung cấp)
