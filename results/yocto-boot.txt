@@ -1,0 +1,33 @@
+run=1
+Startup finished in 3.135s (kernel) + 3.246s (userspace) = 6.382s 
+[picam] START uptime=6.37 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=6.67 s
+[picam] MODEL_READY load+warmup=340 ms uptime=6.72 s
+[picam] FIRST_PERSON_DETECTED uptime=7.91 s (1.54 s after app start)
+run=2
+Startup finished in 3.193s (kernel) + 3.055s (userspace) = 6.248s 
+[picam] START uptime=6.24 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=6.54 s
+[picam] MODEL_READY load+warmup=363 ms uptime=6.62 s
+[picam] FIRST_PERSON_DETECTED uptime=7.78 s (1.54 s after app start)
+run=3
+Startup finished in 3.112s (kernel) + 3.084s (userspace) = 6.196s 
+[picam] START uptime=6.23 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=6.52 s
+[picam] MODEL_READY load+warmup=335 ms uptime=6.57 s
+[picam] FIRST_PERSON_DETECTED uptime=7.76 s (1.53 s after app start)
+run=4
+Startup finished in 3.278s (kernel) + 3.167s (userspace) = 6.446s 
+[picam] START uptime=6.31 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=6.60 s
+[picam] MODEL_READY load+warmup=426 ms uptime=6.74 s
+[picam] FIRST_PERSON_DETECTED uptime=7.84 s (1.53 s after app start)
+run=5
+Startup finished in 3.135s (kernel) + 3.120s (userspace) = 6.256s 
+[picam] START uptime=6.18 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=6.49 s
+[picam] MODEL_READY load+warmup=421 ms uptime=6.61 s
+[picam] FIRST_PERSON_DETECTED uptime=7.73 s (1.55 s after app start)
+# --- trung bình ---
+boot_to_first_person_s=7.80 (n=5)
+systemd_startup_s=6.31 (n=5)

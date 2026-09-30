@@ -24,7 +24,7 @@ if ! "${SSH[@]}" true; then
 fi
 
 echo ">> Thông tin hệ thống"
-"${SSH[@]}" 'tr -d "\0" < /proc/device-tree/model; echo; uname -r; systemd-analyze | head -n 1; ip -brief addr | grep -v "^lo"'
+"${SSH[@]}" 'tr -d "\0" < /proc/device-tree/model; echo; uname -r; systemd-analyze | head -n 1; ip -4 -o addr | grep -v " lo "'
 
 echo ">> Dịch vụ picam-detector"
 state="$("${SSH[@]}" systemctl is-active picam-detector)"

@@ -144,7 +144,7 @@ và `.wic.bmap`. Ghi lại kích thước file `.wic.bz2` và kích thước roo
    systemctl status picam-detector
    journalctl -u picam-detector -b --no-pager | head -30
    v4l2-ctl --list-devices          # phải thấy webcam /dev/video0
-   ip -brief addr
+   ip -4 addr                       # busybox không có `ip -brief`
    ```
 5. [NGƯỜI DÙNG] Mở `http://picam.local:8080`, xác nhận phát hiện đúng.
 
@@ -240,4 +240,4 @@ thiết bị ngoại vi USB qua V4L2 (chương 6).
 | App báo `FATAL: cannot load model` | sai đường dẫn model, hoặc `PICAM_INPUT_SIZE` không khớp model |
 | Lỗi `shape_utils.hpp ... Assertion failed` | OpenCV 4.6 (Raspberry Pi OS Bookworm) — dùng bản Trixie |
 | Pi 5 báo thiếu nguồn / webcam chập chờn | dùng nguồn 5V 5A chính hãng; nguồn 3A giới hạn dòng cổng USB |
-| Web không mở | `ip -brief addr` trên Pi, dùng IP thay cho `picam.local` (Windows hay không phân giải được .local) |
+| Web không mở | `ip -4 addr` trên Pi, dùng IP thay cho `picam.local` (Windows hay không phân giải được .local) |

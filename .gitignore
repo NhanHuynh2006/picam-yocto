@@ -8,3 +8,4 @@ kas/wifi.yml
 meta-picam/recipes-apps/picam-model/files/*.onnx
 results/*.png
 __pycache__/
+build-*.log
