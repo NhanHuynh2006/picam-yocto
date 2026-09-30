@@ -1,0 +1,26 @@
+label=rpios-gate-off-person
+date=2026-09-30 14:44:05
+board=Raspberry Pi 5 Model B Rev 1.1
+kernel=6.12.93+rpt-rpi-2712
+os=Debian GNU/Linux 12 (bookworm)
+# --- khởi động (lần boot hiện tại) ---
+Startup finished in 1.705s (kernel) + 10.252s (userspace) = 11.957s 
+[picam] START uptime=4.39 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=4.71 s
+[picam] MODEL_READY load+warmup=831 ms uptime=5.23 s
+[picam] FIRST_PERSON_DETECTED uptime=5.97 s (1.58 s after app start)
+# --- bộ nhớ, lưu trữ ---
+mem_total_mb=8063
+mem_available_mb=7482
+app_rss_mb=52
+rootfs_used_mb=23905
+processes=227
+# --- đo trong 60s (giữ nguyên cảnh trước camera, đóng trình duyệt) ---
+cpu_util_pct=31.0
+cpu_temp_c=53.5
+inferences=461
+infer_per_s=7.68
+infer_ms_mean=41.2
+infer_ms_p95=48.5
+infer_ms_max=64.8
+>> Đã lưu /tmp/picam-measure-rpios-gate-off-person.txt
