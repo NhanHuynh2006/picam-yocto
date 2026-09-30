@@ -13,7 +13,7 @@ còi, màn hình hay linh kiện nào khác.
 
 Sản phẩm cần có:
 1. Image Yocto (layer riêng `meta-picam`) boot lên là tự chạy ứng dụng phát hiện người.
-2. Ứng dụng C++ `picam-detector`: đọc webcam (V4L2) → YOLOv8n (OpenCV DNN) → web xem trực
+2. Ứng dụng C++ `picam-detector`: đọc webcam (V4L2) → YOLO26n (OpenCV DNN) → web xem trực
    tiếp tại `http://<ip>:8080` + số liệu JSON tại `/stats`.
 3. Số liệu so sánh image Yocto với Raspberry Pi OS (cùng board, cùng app, cùng model).
 
@@ -48,11 +48,12 @@ meta-picam/
   recipes-apps/picam-model/                           cài model ONNX vào /usr/share/picam/
   recipes-connectivity/network-config/                systemd-networkd + wpa_supplicant
 scripts/host_setup.sh     cài Docker + kas trên máy build (1 lần)
-scripts/export_model.sh   xuất YOLOv8n -> ONNX (256, 320) và tự kiểm tra bằng OpenCV
+scripts/export_model.sh   xuất YOLO26n -> ONNX (256, 320) và tự kiểm tra bằng OpenCV
 scripts/build.sh          build image cho một board
 scripts/flash.sh          ghi image ra thẻ nhớ bằng bmaptool
 scripts/check_device.sh   từ laptop: kiểm tra hết giai đoạn 4 bằng một lệnh (SSH + /stats + snapshot)
 scripts/measure_remote.sh từ laptop: chạy measure.sh trên board qua SSH, lưu results/<nhãn>.txt
+scripts/rpios/build_opencv.sh      (chỉ Bookworm) biên dịch OpenCV 4.9.0 vào /opt
 scripts/rpios/install_baseline.sh   cài cùng app lên Raspberry Pi OS (baseline + thử khả thi)
 scripts/device/measure.sh           đo trên thiết bị (chạy được trên cả 2 hệ điều hành)
 tools/collect_stats.py    lấy /stats từ laptop ra CSV
@@ -96,8 +97,12 @@ Build chạy trong `kas-container` (Docker), nên không phụ thuộc phiên b�
 
 **Điều kiện hoàn thành:** in ra hai dòng `>> OK ... output=(1, 84, N)`.
 
-Model phải là dạng đầu ra YOLOv8 `[1, 4+số_lớp, N]`. OpenCV **4.6 không chạy được** model này;
-cần OpenCV ≥ 4.7 (Yocto scarthgap có 4.9, Raspberry Pi OS Trixie có 4.10).
+Model là **YOLO26n** (đổi bằng `YOLO_MODEL=yolov8n ./scripts/export_model.sh`), xuất ở dạng đầu
+ra "một-nhiều" `[1, 4+số_lớp, N]` giống YOLOv8 (app tự làm NMS). OpenCV **4.6 không nạp được**
+cả YOLOv8 lẫn YOLO26 (đã thử opset 11/13/17, có/không simplify); cần OpenCV ≥ 4.7 (Yocto
+scarthgap có 4.9, Raspberry Pi OS Trixie có 4.10). Trên Raspberry Pi OS **Bookworm** chạy
+`sudo ./scripts/rpios/build_opencv.sh` trước để có OpenCV 4.9.0 tại `/opt/opencv-4.9.0`
+(cùng phiên bản với Yocto), rồi mới chạy `install_baseline.sh`.
 
 ## Giai đoạn 2 — Thử khả thi + baseline trên Raspberry Pi OS  [NGƯỜI DÙNG]
 
@@ -218,7 +223,7 @@ khi tắt máy.
 ## Kiến trúc ứng dụng (dùng cho báo cáo)
 
 Bốn luồng: **camera** (luôn giữ khung hình mới nhất, không xếp hàng) → **suy luận** (cổng
-chuyển động bằng trừ ảnh 160x120, rồi YOLOv8n qua OpenCV DNN với letterbox + NMS) →
+chuyển động bằng trừ ảnh 160x120, rồi YOLO26n qua OpenCV DNN với letterbox + NMS) →
 **web** (MJPEG, mã hoá JPEG một lần dùng chung cho mọi người xem) và **main** (tính tốc độ, in
 trạng thái mỗi 10 s). Camera được mở song song với lúc nạp model để rút ngắn thời gian từ boot
 đến lần phát hiện đầu tiên. Dịch vụ systemd cố ý không chờ mạng vì cùng lý do.

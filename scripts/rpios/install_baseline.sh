@@ -20,16 +20,28 @@ MODEL="$ROOT/meta-picam/recipes-apps/picam-model/files/model-$SIZE.onnx"
 [ -f "$MODEL" ] || { echo "LỖI: thiếu $MODEL (export trên laptop rồi copy repo sang)"; exit 1; }
 
 apt-get update
-apt-get install -y --no-install-recommends cmake g++ make pkg-config libopencv-dev v4l-utils
+apt-get install -y --no-install-recommends cmake g++ make pkg-config v4l-utils
 
-CV="$(pkg-config --modversion opencv4)"
-if [ "$(printf '%s\n4.7.0\n' "$CV" | sort -V | head -1)" != "4.7.0" ]; then
-    echo "LỖI: OpenCV $CV quá cũ, không chạy được model YOLOv8 (cần >= 4.7)."
-    echo "     Hãy dùng Raspberry Pi OS bản Trixie (Debian 13), không dùng Bookworm."
-    exit 1
+# Bản Bookworm chỉ có OpenCV 4.6: chạy trước scripts/rpios/build_opencv.sh để có
+# OpenCV 4.9.0 (cùng phiên bản với Yocto) tại /opt/opencv-4.9.0.
+OPENCV_PREFIX="${OPENCV_PREFIX:-/opt/opencv-4.9.0}"
+CMAKE_EXTRA=""
+if [ -f "$OPENCV_PREFIX/lib/cmake/opencv4/OpenCVConfig.cmake" ]; then
+    echo ">> Dùng OpenCV tại $OPENCV_PREFIX"
+    CMAKE_EXTRA="-DCMAKE_PREFIX_PATH=$OPENCV_PREFIX -DCMAKE_INSTALL_RPATH=$OPENCV_PREFIX/lib"
+else
+    apt-get install -y --no-install-recommends libopencv-dev
+    CV="$(pkg-config --modversion opencv4)"
+    if [ "$(printf '%s\n4.7.0\n' "$CV" | sort -V | head -1)" != "4.7.0" ]; then
+        echo "LỖI: OpenCV $CV quá cũ, không chạy được model YOLOv8 (cần >= 4.7)."
+        echo "     Dùng Raspberry Pi OS bản Trixie, hoặc chạy: sudo ./scripts/rpios/build_opencv.sh"
+        exit 1
+    fi
 fi
 
-cmake -S "$FILES/picam-detector" -B /tmp/picam-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+rm -rf /tmp/picam-build
+# shellcheck disable=SC2086
+cmake -S "$FILES/picam-detector" -B /tmp/picam-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr $CMAKE_EXTRA
 cmake --build /tmp/picam-build -j"$JOBS"
 cmake --install /tmp/picam-build
 

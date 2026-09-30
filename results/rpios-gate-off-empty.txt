@@ -1,0 +1,26 @@
+label=rpios-gate-off-empty
+date=2026-09-30 14:18:46
+board=Raspberry Pi 5 Model B Rev 1.1
+kernel=6.12.93+rpt-rpi-2712
+os=Debian GNU/Linux 12 (bookworm)
+# --- khởi động (lần boot hiện tại) ---
+Startup finished in 1.624s (kernel) + 9.615s (userspace) = 11.240s 
+[picam] START uptime=2312.87 s
+[picam] MODEL_READY load+warmup=165 ms uptime=2313.04 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=2313.91 s
+[picam] START uptime=2394.75 s
+# --- bộ nhớ, lưu trữ ---
+mem_total_mb=8063
+mem_available_mb=7412
+app_rss_mb=53
+rootfs_used_mb=26198
+processes=223
+# --- đo trong 60s (giữ nguyên cảnh trước camera, đóng trình duyệt) ---
+cpu_util_pct=28.3
+cpu_temp_c=54.5
+inferences=463
+infer_per_s=7.72
+infer_ms_mean=37.8
+infer_ms_p95=40.1
+infer_ms_max=53.1
+>> Đã lưu /tmp/picam-measure-rpios-gate-off-empty.txt

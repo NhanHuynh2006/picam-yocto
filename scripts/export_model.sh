@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Xuất YOLOv8n sang ONNX cho OpenCV DNN, ở các kích thước đầu vào mà kas/*.yml dùng.
+# Xuất YOLO26n (Ultralytics, bản mới nhất) sang ONNX cho OpenCV DNN, ở các kích thước đầu vào mà kas/*.yml dùng.
 # Chạy trên máy build (laptop). Kết quả: meta-picam/recipes-apps/picam-model/files/model-<size>.onnx
 #
 #   ./scripts/export_model.sh              # mặc định 256 và 320
 #   ./scripts/export_model.sh 224 256 320  # tự chọn kích thước
+#   YOLO_MODEL=yolov8n ./scripts/export_model.sh   # dùng model khác (cùng dạng đầu ra [1, 84, N])
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/meta-picam/recipes-apps/picam-model/files"
 VENV="${VENV:-$ROOT/.venv-export}"
+export YOLO_MODEL="${YOLO_MODEL:-yolo26n}"
 SIZES=("$@")
 [ ${#SIZES[@]} -eq 0 ] && SIZES=(256 320)
 
@@ -25,14 +27,16 @@ trap 'rm -rf "$WORK"' EXIT
 cd "$WORK"
 
 "$VENV/bin/python" - "$OUT" "${SIZES[@]}" <<'PY'
-import shutil, sys
+import os, shutil, sys
 import cv2
 import numpy as np
 from ultralytics import YOLO
 
 out_dir, sizes = sys.argv[1], [int(s) for s in sys.argv[2:]]
 for size in sizes:
-    model = YOLO("yolov8n.pt")  # tự tải trọng số COCO lần đầu
+    # Tự tải trọng số COCO lần đầu. YOLO26 có 2 đầu ra; bản export mặc định là đầu
+    # "một-nhiều" [1, 84, N] (cần NMS, app tự làm) — đúng dạng app đang đọc.
+    model = YOLO(os.environ["YOLO_MODEL"] + ".pt")
     path = model.export(format="onnx", imgsz=size, opset=12, simplify=True, dynamic=False)
     dst = f"{out_dir}/model-{size}.onnx"
     shutil.copy(path, dst)

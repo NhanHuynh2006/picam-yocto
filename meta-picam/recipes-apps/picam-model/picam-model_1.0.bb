@@ -1,5 +1,5 @@
-SUMMARY = "ONNX person-detection model (YOLOv8n, Ultralytics) for picam-detector"
-# Trọng số YOLOv8 của Ultralytics phát hành theo AGPL-3.0
+SUMMARY = "ONNX person-detection model (YOLO26n, Ultralytics) for picam-detector"
+# Trọng số YOLO của Ultralytics phát hành theo AGPL-3.0
 LICENSE = "AGPL-3.0-only"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/AGPL-3.0-only;md5=73f1eb20517c55bf9493b7dd6e480788"
 
