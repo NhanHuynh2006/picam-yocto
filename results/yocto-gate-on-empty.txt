@@ -1,0 +1,26 @@
+label=yocto-gate-on-empty
+date=2026-09-30 06:36:23
+board=Raspberry Pi 5 Model B Rev 1.1
+kernel=6.6.63-v8-16k
+os=Poky (Yocto Project Reference Distro) 5.0.20 (scarthgap)
+# --- khởi động (lần boot hiện tại) ---
+Startup finished in 3.135s (kernel) + 3.120s (userspace) = 6.256s 
+[picam] START uptime=6.18 s
+[picam] CAMERA_OPENED /dev/video0 640x480 @ 15 fps uptime=6.49 s
+[picam] MODEL_READY load+warmup=421 ms uptime=6.61 s
+[picam] FIRST_PERSON_DETECTED uptime=7.73 s (1.55 s after app start)
+# --- bộ nhớ, lưu trữ ---
+mem_total_mb=8062
+mem_available_mb=7810
+app_rss_mb=75
+rootfs_used_mb=142
+processes=168
+# --- đo trong 60s (giữ nguyên cảnh trước camera, đóng trình duyệt) ---
+cpu_util_pct=3.0
+cpu_temp_c=45.8
+inferences=24
+infer_per_s=0.40
+infer_ms_mean=42.8
+infer_ms_p95=43.1
+infer_ms_max=47.1
+>> Đã lưu /tmp/picam-measure-yocto-gate-on-empty.txt
